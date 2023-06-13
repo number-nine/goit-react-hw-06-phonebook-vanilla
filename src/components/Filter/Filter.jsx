@@ -1,11 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 
-import { update } from 'redux/filterSlice';
+import { getFilter } from 'redux/selectors';
+
+import { updateFilter } from 'redux/actions';
 import { Button } from '../common.styled';
 import { FilterWrapper } from './Filter.styled';
 
 const Filter = () => {
-  const filter = useSelector(state => state.filter);
+  const filter = useSelector(getFilter);
   const dispatch = useDispatch();
   return (
     <FilterWrapper>
@@ -14,13 +16,13 @@ const Filter = () => {
         name="filter"
         value={filter}
         onChange={e => {
-          dispatch(update(e.target.value));
+          dispatch(updateFilter(e.target.value));
         }}
       />
       <Button
         type="button"
         onClick={() => {
-          dispatch(update(''));
+          dispatch(updateFilter(''));
         }}
       >
         Clear field

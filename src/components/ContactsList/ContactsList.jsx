@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
+import {getAuth, getFilter, getContacts} from 'redux/selectors'
 
-import { remove } from 'redux/contactsSlice';
+import { removeContact } from 'redux/actions';
 import {
   ListWrapper,
   PrivateContact,
@@ -9,12 +10,14 @@ import {
 import { Button } from '../common.styled';
 
 const ContactsList = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-  const { isLoggedIn } = useSelector(state => state.auth);
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const { isLoggedIn } = useSelector(getAuth);
 
-  const visibleContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.trim().toLowerCase())
+  const visibleContacts = contacts.filter(
+    contact =>
+      contact.name.toLowerCase().includes(filter.trim().toLowerCase()) &&
+      (!contact.isPrivate || isLoggedIn)
   );
   const dispatch = useDispatch();
   return visibleContacts.length === 0 ? (
@@ -23,7 +26,6 @@ const ContactsList = () => {
     <ListWrapper>
       {visibleContacts.map(({ id, name, number, isPrivate }) => {
         return (
-          (!isPrivate || isLoggedIn) && (
             <li key={id}>
               {name}: {number}
               {isLoggedIn &&
@@ -33,12 +35,14 @@ const ContactsList = () => {
                   <SharedContact>shared</SharedContact>
                 ))}
               {isLoggedIn && (
-                <Button type="button" onClick={() => dispatch(remove(id))}>
+                <Button
+                  type="button"
+                  onClick={() => dispatch(removeContact(id))}
+                >
                   Delete
                 </Button>
               )}
             </li>
-          )
         );
       })}
     </ListWrapper>

@@ -2,17 +2,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { FormStyled, ButtonStyled, LabelStyled } from './LoginForm.styled';
-import { login, logout } from 'redux/authSlice';
+import { loginAuth, logoutAuth } from 'redux/actions';
+import { getAuth } from 'redux/selectors';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { userName: currentUser, isLoggedIn } = useSelector(
-    state => state.auth
-  );
+  const { userName: currentUser, isLoggedIn } = useSelector(getAuth);
   const handleSubmit = e => {
     e.preventDefault();
     if (isLoggedIn) {
-      dispatch(logout());
+      dispatch(logoutAuth());
       return;
     }
 
@@ -21,7 +20,7 @@ const LoginForm = () => {
       Notify.failure('Enter valid username');
       return;
     }
-    dispatch(login({ userName }));
+    dispatch(loginAuth({ userName }));
     e.target.reset();
     return;
   };

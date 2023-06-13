@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 import SharedLayout from 'components/SharedLayout';
 import Home from 'pages/Home';
 import Dashboard from 'pages/Dashboard';
+import {getAuth} from 'redux/selectors'
 
 export default function App() {
-  const { isLoggedIn } = useSelector(state => state.auth);
+  const { isLoggedIn } = useSelector(getAuth);
 
   return (
     <Routes>

@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
-import { add } from 'redux/contactsSlice';
+import { addContact } from 'redux/actions';
 
 import {
   FormStyled,
@@ -52,7 +52,7 @@ const ContactEditor = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values, { resetForm }) => {
-      dispatch(add(values));
+      dispatch(addContact(values));
       resetForm();
     },
   });
