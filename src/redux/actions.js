@@ -27,13 +27,14 @@ export const logoutAuth = () => {
   };
 };
 
-export const addContact = ({ name, number }) => {
+export const addContact = (values) => {
   return {
     type: 'contacts/add',
     payload: {
-      name: name.trim(),
-      number: number.trim(),
-      id: nanoid,
+      ...values,
+      name: values.name.trim(),
+      number: values.number.trim(),
+      id: nanoid(),
     },
   };
 };
